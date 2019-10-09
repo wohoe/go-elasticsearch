@@ -215,8 +215,8 @@ import (
 	"fmt"
 	"context"
 	"crypto/tls"
-	"os"
 	"net/url"
+	"os"
 	"testing"
 	"time"
 
