@@ -13,9 +13,9 @@ import (
 	"strings"
 )
 
-func newMLEstimateMemoryUsageFunc(t Transport) MLEstimateMemoryUsage {
-	return func(body io.Reader, o ...func(*MLEstimateMemoryUsageRequest)) (*Response, error) {
-		var r = MLEstimateMemoryUsageRequest{Body: body}
+func newDataFrameTransformDeprecatedPreviewTransformFunc(t Transport) DataFrameTransformDeprecatedPreviewTransform {
+	return func(body io.Reader, o ...func(*DataFrameTransformDeprecatedPreviewTransformRequest)) (*Response, error) {
+		var r = DataFrameTransformDeprecatedPreviewTransformRequest{Body: body}
 		for _, f := range o {
 			f(&r)
 		}
@@ -25,15 +25,15 @@ func newMLEstimateMemoryUsageFunc(t Transport) MLEstimateMemoryUsage {
 
 // ----- API Definition -------------------------------------------------------
 
-// MLEstimateMemoryUsage -
+// DataFrameTransformDeprecatedPreviewTransform -
 //
-// See full documentation at http://www.elastic.co/guide/en/elasticsearch/reference/current/estimate-memory-usage-dfanalytics.html.
+// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-transform.html.
 //
-type MLEstimateMemoryUsage func(body io.Reader, o ...func(*MLEstimateMemoryUsageRequest)) (*Response, error)
+type DataFrameTransformDeprecatedPreviewTransform func(body io.Reader, o ...func(*DataFrameTransformDeprecatedPreviewTransformRequest)) (*Response, error)
 
-// MLEstimateMemoryUsageRequest configures the ML Estimate Memory Usage API request.
+// DataFrameTransformDeprecatedPreviewTransformRequest configures the Data Frame Transform Deprecated Preview Transform API request.
 //
-type MLEstimateMemoryUsageRequest struct {
+type DataFrameTransformDeprecatedPreviewTransformRequest struct {
 	Body io.Reader
 
 	Pretty     bool
@@ -48,7 +48,7 @@ type MLEstimateMemoryUsageRequest struct {
 
 // Do executes the request and returns response or error.
 //
-func (r MLEstimateMemoryUsageRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
+func (r DataFrameTransformDeprecatedPreviewTransformRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
 	var (
 		method string
 		path   strings.Builder
@@ -57,8 +57,8 @@ func (r MLEstimateMemoryUsageRequest) Do(ctx context.Context, transport Transpor
 
 	method = "POST"
 
-	path.Grow(len("/_ml/data_frame/analytics/_estimate_memory_usage"))
-	path.WriteString("/_ml/data_frame/analytics/_estimate_memory_usage")
+	path.Grow(len("/_data_frame/transforms/_preview"))
+	path.WriteString("/_data_frame/transforms/_preview")
 
 	params = make(map[string]string)
 
@@ -127,48 +127,48 @@ func (r MLEstimateMemoryUsageRequest) Do(ctx context.Context, transport Transpor
 
 // WithContext sets the request context.
 //
-func (f MLEstimateMemoryUsage) WithContext(v context.Context) func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithContext(v context.Context) func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		r.ctx = v
 	}
 }
 
 // WithPretty makes the response body pretty-printed.
 //
-func (f MLEstimateMemoryUsage) WithPretty() func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithPretty() func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		r.Pretty = true
 	}
 }
 
 // WithHuman makes statistical values human-readable.
 //
-func (f MLEstimateMemoryUsage) WithHuman() func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithHuman() func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		r.Human = true
 	}
 }
 
 // WithErrorTrace includes the stack trace for errors in the response body.
 //
-func (f MLEstimateMemoryUsage) WithErrorTrace() func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithErrorTrace() func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		r.ErrorTrace = true
 	}
 }
 
 // WithFilterPath filters the properties of the response body.
 //
-func (f MLEstimateMemoryUsage) WithFilterPath(v ...string) func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithFilterPath(v ...string) func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		r.FilterPath = v
 	}
 }
 
 // WithHeader adds the headers to the HTTP request.
 //
-func (f MLEstimateMemoryUsage) WithHeader(h map[string]string) func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithHeader(h map[string]string) func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}
@@ -180,8 +180,8 @@ func (f MLEstimateMemoryUsage) WithHeader(h map[string]string) func(*MLEstimateM
 
 // WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
 //
-func (f MLEstimateMemoryUsage) WithOpaqueID(s string) func(*MLEstimateMemoryUsageRequest) {
-	return func(r *MLEstimateMemoryUsageRequest) {
+func (f DataFrameTransformDeprecatedPreviewTransform) WithOpaqueID(s string) func(*DataFrameTransformDeprecatedPreviewTransformRequest) {
+	return func(r *DataFrameTransformDeprecatedPreviewTransformRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}
