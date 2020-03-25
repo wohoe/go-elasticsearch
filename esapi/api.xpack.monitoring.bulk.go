@@ -40,6 +40,8 @@ func newMonitoringBulkFunc(t Transport) MonitoringBulk {
 
 // MonitoringBulk - Used by the monitoring features to send monitoring data.
 //
+// This API is experimental.
+//
 // See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/monitor-elasticsearch-cluster.html.
 //
 type MonitoringBulk func(body io.Reader, o ...func(*MonitoringBulkRequest)) (*Response, error)

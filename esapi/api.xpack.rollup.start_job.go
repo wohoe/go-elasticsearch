@@ -43,6 +43,8 @@ func newRollupStartJobFunc(t Transport) RollupStartJob {
 //
 // See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/rollup-start-job.html.
 //
+// This API is experimental.
+//
 type RollupStartJob func(id string, o ...func(*RollupStartJobRequest)) (*Response, error)
 
 // RollupStartJobRequest configures the Rollup Start Job API request.

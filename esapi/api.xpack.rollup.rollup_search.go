@@ -46,6 +46,8 @@ func newRollupRollupSearchFunc(t Transport) RollupRollupSearch {
 //
 // See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/rollup-search.html.
 //
+// This API is experimental.
+//
 type RollupRollupSearch func(index []string, body io.Reader, o ...func(*RollupRollupSearchRequest)) (*Response, error)
 
 // RollupRollupSearchRequest configures the Rollup Rollup Search API request.

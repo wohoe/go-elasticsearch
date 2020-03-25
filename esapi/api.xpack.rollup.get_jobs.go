@@ -43,6 +43,8 @@ func newRollupGetJobsFunc(t Transport) RollupGetJobs {
 //
 // See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/rollup-get-job.html.
 //
+// This API is experimental.
+//
 type RollupGetJobs func(o ...func(*RollupGetJobsRequest)) (*Response, error)
 
 // RollupGetJobsRequest configures the Rollup Get Jobs API request.

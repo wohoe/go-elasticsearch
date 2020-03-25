@@ -12,9 +12,9 @@ import (
 	"strings"
 )
 
-func newAutoscalingGetAutoscalingDecisionFunc(t Transport) AutoscalingGetAutoscalingDecision {
-	return func(o ...func(*AutoscalingGetAutoscalingDecisionRequest)) (*Response, error) {
-		var r = AutoscalingGetAutoscalingDecisionRequest{}
+func newIndicesDeleteDataStreamFunc(t Transport) IndicesDeleteDataStream {
+	return func(name string, o ...func(*IndicesDeleteDataStreamRequest)) (*Response, error) {
+		var r = IndicesDeleteDataStreamRequest{Name: name}
 		for _, f := range o {
 			f(&r)
 		}
@@ -24,17 +24,19 @@ func newAutoscalingGetAutoscalingDecisionFunc(t Transport) AutoscalingGetAutosca
 
 // ----- API Definition -------------------------------------------------------
 
-// AutoscalingGetAutoscalingDecision -
+// IndicesDeleteDataStream deletes a data stream.
 //
 // This API is experimental.
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/autoscaling-get-autoscaling-decision.html.
+// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html.
 //
-type AutoscalingGetAutoscalingDecision func(o ...func(*AutoscalingGetAutoscalingDecisionRequest)) (*Response, error)
+type IndicesDeleteDataStream func(name string, o ...func(*IndicesDeleteDataStreamRequest)) (*Response, error)
 
-// AutoscalingGetAutoscalingDecisionRequest configures the Autoscaling Get Autoscaling Decision API request.
+// IndicesDeleteDataStreamRequest configures the Indices Delete Data Stream API request.
 //
-type AutoscalingGetAutoscalingDecisionRequest struct {
+type IndicesDeleteDataStreamRequest struct {
+	Name string
+
 	Pretty     bool
 	Human      bool
 	ErrorTrace bool
@@ -47,17 +49,20 @@ type AutoscalingGetAutoscalingDecisionRequest struct {
 
 // Do executes the request and returns response or error.
 //
-func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
+func (r IndicesDeleteDataStreamRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
 	var (
 		method string
 		path   strings.Builder
 		params map[string]string
 	)
 
-	method = "GET"
+	method = "DELETE"
 
-	path.Grow(len("/_autoscaling/decision"))
-	path.WriteString("/_autoscaling/decision")
+	path.Grow(1 + len("_data_stream") + 1 + len(r.Name))
+	path.WriteString("/")
+	path.WriteString("_data_stream")
+	path.WriteString("/")
+	path.WriteString(r.Name)
 
 	params = make(map[string]string)
 
@@ -122,48 +127,48 @@ func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transp
 
 // WithContext sets the request context.
 //
-func (f AutoscalingGetAutoscalingDecision) WithContext(v context.Context) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithContext(v context.Context) func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		r.ctx = v
 	}
 }
 
 // WithPretty makes the response body pretty-printed.
 //
-func (f AutoscalingGetAutoscalingDecision) WithPretty() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithPretty() func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		r.Pretty = true
 	}
 }
 
 // WithHuman makes statistical values human-readable.
 //
-func (f AutoscalingGetAutoscalingDecision) WithHuman() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithHuman() func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		r.Human = true
 	}
 }
 
 // WithErrorTrace includes the stack trace for errors in the response body.
 //
-func (f AutoscalingGetAutoscalingDecision) WithErrorTrace() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithErrorTrace() func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		r.ErrorTrace = true
 	}
 }
 
 // WithFilterPath filters the properties of the response body.
 //
-func (f AutoscalingGetAutoscalingDecision) WithFilterPath(v ...string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithFilterPath(v ...string) func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		r.FilterPath = v
 	}
 }
 
 // WithHeader adds the headers to the HTTP request.
 //
-func (f AutoscalingGetAutoscalingDecision) WithHeader(h map[string]string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithHeader(h map[string]string) func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}
@@ -175,8 +180,8 @@ func (f AutoscalingGetAutoscalingDecision) WithHeader(h map[string]string) func(
 
 // WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
 //
-func (f AutoscalingGetAutoscalingDecision) WithOpaqueID(s string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesDeleteDataStream) WithOpaqueID(s string) func(*IndicesDeleteDataStreamRequest) {
+	return func(r *IndicesDeleteDataStreamRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}

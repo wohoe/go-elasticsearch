@@ -43,6 +43,8 @@ func newRollupGetRollupCapsFunc(t Transport) RollupGetRollupCaps {
 //
 // See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/rollup-get-rollup-caps.html.
 //
+// This API is experimental.
+//
 type RollupGetRollupCaps func(o ...func(*RollupGetRollupCapsRequest)) (*Response, error)
 
 // RollupGetRollupCapsRequest configures the Rollup Get Rollup Caps API request.

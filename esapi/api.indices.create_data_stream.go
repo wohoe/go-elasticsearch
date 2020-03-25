@@ -8,13 +8,14 @@ package esapi
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"strings"
 )
 
-func newAutoscalingGetAutoscalingDecisionFunc(t Transport) AutoscalingGetAutoscalingDecision {
-	return func(o ...func(*AutoscalingGetAutoscalingDecisionRequest)) (*Response, error) {
-		var r = AutoscalingGetAutoscalingDecisionRequest{}
+func newIndicesCreateDataStreamFunc(t Transport) IndicesCreateDataStream {
+	return func(name string, body io.Reader, o ...func(*IndicesCreateDataStreamRequest)) (*Response, error) {
+		var r = IndicesCreateDataStreamRequest{Name: name, Body: body}
 		for _, f := range o {
 			f(&r)
 		}
@@ -24,17 +25,21 @@ func newAutoscalingGetAutoscalingDecisionFunc(t Transport) AutoscalingGetAutosca
 
 // ----- API Definition -------------------------------------------------------
 
-// AutoscalingGetAutoscalingDecision -
+// IndicesCreateDataStream creates or updates a data stream
 //
 // This API is experimental.
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/autoscaling-get-autoscaling-decision.html.
+// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html.
 //
-type AutoscalingGetAutoscalingDecision func(o ...func(*AutoscalingGetAutoscalingDecisionRequest)) (*Response, error)
+type IndicesCreateDataStream func(name string, body io.Reader, o ...func(*IndicesCreateDataStreamRequest)) (*Response, error)
 
-// AutoscalingGetAutoscalingDecisionRequest configures the Autoscaling Get Autoscaling Decision API request.
+// IndicesCreateDataStreamRequest configures the Indices Create Data Stream API request.
 //
-type AutoscalingGetAutoscalingDecisionRequest struct {
+type IndicesCreateDataStreamRequest struct {
+	Body io.Reader
+
+	Name string
+
 	Pretty     bool
 	Human      bool
 	ErrorTrace bool
@@ -47,17 +52,20 @@ type AutoscalingGetAutoscalingDecisionRequest struct {
 
 // Do executes the request and returns response or error.
 //
-func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
+func (r IndicesCreateDataStreamRequest) Do(ctx context.Context, transport Transport) (*Response, error) {
 	var (
 		method string
 		path   strings.Builder
 		params map[string]string
 	)
 
-	method = "GET"
+	method = "PUT"
 
-	path.Grow(len("/_autoscaling/decision"))
-	path.WriteString("/_autoscaling/decision")
+	path.Grow(1 + len("_data_stream") + 1 + len(r.Name))
+	path.WriteString("/")
+	path.WriteString("_data_stream")
+	path.WriteString("/")
+	path.WriteString(r.Name)
 
 	params = make(map[string]string)
 
@@ -77,7 +85,7 @@ func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transp
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
+	req, err := newRequest(method, path.String(), r.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -88,6 +96,10 @@ func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transp
 			q.Set(k, v)
 		}
 		req.URL.RawQuery = q.Encode()
+	}
+
+	if r.Body != nil {
+		req.Header[headerContentType] = headerContentTypeJSON
 	}
 
 	if len(r.Header) > 0 {
@@ -122,48 +134,48 @@ func (r AutoscalingGetAutoscalingDecisionRequest) Do(ctx context.Context, transp
 
 // WithContext sets the request context.
 //
-func (f AutoscalingGetAutoscalingDecision) WithContext(v context.Context) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithContext(v context.Context) func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		r.ctx = v
 	}
 }
 
 // WithPretty makes the response body pretty-printed.
 //
-func (f AutoscalingGetAutoscalingDecision) WithPretty() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithPretty() func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		r.Pretty = true
 	}
 }
 
 // WithHuman makes statistical values human-readable.
 //
-func (f AutoscalingGetAutoscalingDecision) WithHuman() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithHuman() func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		r.Human = true
 	}
 }
 
 // WithErrorTrace includes the stack trace for errors in the response body.
 //
-func (f AutoscalingGetAutoscalingDecision) WithErrorTrace() func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithErrorTrace() func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		r.ErrorTrace = true
 	}
 }
 
 // WithFilterPath filters the properties of the response body.
 //
-func (f AutoscalingGetAutoscalingDecision) WithFilterPath(v ...string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithFilterPath(v ...string) func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		r.FilterPath = v
 	}
 }
 
 // WithHeader adds the headers to the HTTP request.
 //
-func (f AutoscalingGetAutoscalingDecision) WithHeader(h map[string]string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithHeader(h map[string]string) func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}
@@ -175,8 +187,8 @@ func (f AutoscalingGetAutoscalingDecision) WithHeader(h map[string]string) func(
 
 // WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
 //
-func (f AutoscalingGetAutoscalingDecision) WithOpaqueID(s string) func(*AutoscalingGetAutoscalingDecisionRequest) {
-	return func(r *AutoscalingGetAutoscalingDecisionRequest) {
+func (f IndicesCreateDataStream) WithOpaqueID(s string) func(*IndicesCreateDataStreamRequest) {
+	return func(r *IndicesCreateDataStreamRequest) {
 		if r.Header == nil {
 			r.Header = make(http.Header)
 		}
