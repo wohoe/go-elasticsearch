@@ -58,6 +58,7 @@ type IndexRequest struct {
 	IfSeqNo             *int
 	OpType              string
 	Pipeline            string
+	PreferV2Templates   *bool
 	Refresh             string
 	RequireAlias        *bool
 	Routing             string
@@ -118,6 +119,10 @@ func (r IndexRequest) Do(ctx context.Context, transport Transport) (*Response, e
 
 	if r.Pipeline != "" {
 		params["pipeline"] = r.Pipeline
+	}
+
+	if r.PreferV2Templates != nil {
+		params["prefer_v2_templates"] = strconv.FormatBool(*r.PreferV2Templates)
 	}
 
 	if r.Refresh != "" {
@@ -256,6 +261,14 @@ func (f Index) WithOpType(v string) func(*IndexRequest) {
 func (f Index) WithPipeline(v string) func(*IndexRequest) {
 	return func(r *IndexRequest) {
 		r.Pipeline = v
+	}
+}
+
+// WithPreferV2Templates - favor v2 templates instead of v1 templates during automatic index creation.
+//
+func (f Index) WithPreferV2Templates(v bool) func(*IndexRequest) {
+	return func(r *IndexRequest) {
+		r.PreferV2Templates = &v
 	}
 }
 

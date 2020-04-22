@@ -54,6 +54,7 @@ type BulkRequest struct {
 	Body io.Reader
 
 	Pipeline            string
+	PreferV2Templates   *bool
 	Refresh             string
 	RequireAlias        *bool
 	Routing             string
@@ -98,6 +99,10 @@ func (r BulkRequest) Do(ctx context.Context, transport Transport) (*Response, er
 
 	if r.Pipeline != "" {
 		params["pipeline"] = r.Pipeline
+	}
+
+	if r.PreferV2Templates != nil {
+		params["prefer_v2_templates"] = strconv.FormatBool(*r.PreferV2Templates)
 	}
 
 	if r.Refresh != "" {
@@ -220,6 +225,14 @@ func (f Bulk) WithIndex(v string) func(*BulkRequest) {
 func (f Bulk) WithPipeline(v string) func(*BulkRequest) {
 	return func(r *BulkRequest) {
 		r.Pipeline = v
+	}
+}
+
+// WithPreferV2Templates - favor v2 templates instead of v1 templates during automatic index creation.
+//
+func (f Bulk) WithPreferV2Templates(v bool) func(*BulkRequest) {
+	return func(r *BulkRequest) {
+		r.PreferV2Templates = &v
 	}
 }
 

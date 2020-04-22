@@ -57,6 +57,7 @@ type IndicesRolloverRequest struct {
 
 	DryRun              *bool
 	MasterTimeout       time.Duration
+	PreferV2Templates   *bool
 	Timeout             time.Duration
 	WaitForActiveShards string
 
@@ -100,6 +101,10 @@ func (r IndicesRolloverRequest) Do(ctx context.Context, transport Transport) (*R
 
 	if r.MasterTimeout != 0 {
 		params["master_timeout"] = formatDuration(r.MasterTimeout)
+	}
+
+	if r.PreferV2Templates != nil {
+		params["prefer_v2_templates"] = strconv.FormatBool(*r.PreferV2Templates)
 	}
 
 	if r.Timeout != 0 {
@@ -210,6 +215,14 @@ func (f IndicesRollover) WithDryRun(v bool) func(*IndicesRolloverRequest) {
 func (f IndicesRollover) WithMasterTimeout(v time.Duration) func(*IndicesRolloverRequest) {
 	return func(r *IndicesRolloverRequest) {
 		r.MasterTimeout = v
+	}
+}
+
+// WithPreferV2Templates - favor v2 templates instead of v1 templates during automatic index creation.
+//
+func (f IndicesRollover) WithPreferV2Templates(v bool) func(*IndicesRolloverRequest) {
+	return func(r *IndicesRolloverRequest) {
+		r.PreferV2Templates = &v
 	}
 }
 
